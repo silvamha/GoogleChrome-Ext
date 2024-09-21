@@ -9,22 +9,23 @@ document.querySelector("#div-ul-container-el").append(uLEl);
 
 let myLeads = [];
 
-// console.log(myLeads);
-// console.log(displayLeads);
-
 inputBtn.addEventListener("click", () => {
   let inputValue = inputEl.value;
   myLeads.push(inputValue);
 
   const liEl = document.createElement("li");
-
   liEl.textContent = inputValue;
-  uLEl.append(liEl);
-  uLEl.appendChild(liEl)
+  liEl.setAttribute("class", "li-el");
+
+  const aEl = document.createElement("a");
+  aEl.href = "inputValue";
+  aEl.textContent = inputValue;
+  liEl.appendChild(aEl);
+  uLEl.appendChild(liEl);
   console.log(myLeads);
-//   console.log(liEl.textContent);
 
   clearField();
+  console.log(myLeads);
 });
 
 let clearField = () => {
