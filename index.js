@@ -19,6 +19,11 @@ let myLeads = [];
 
 let leadsFromLocalStorage = JSON.parse( localStorage.getItem("myLeads") )
 
+if (leadsFromLocalStorage) {
+  myLeads = leadsFromLocalStorage
+  renderLeads();
+}
+
 console.log(leadsFromLocalStorage)
 
 inputBtn.addEventListener("click", () => {
