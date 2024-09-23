@@ -1,58 +1,68 @@
-const inputEl = document.querySelector("#input-el");
-const inputBtn = document.querySelector("#input-btn");
-const divUlContainer = document.createElement("div");
-document.querySelector("body").append(divUlContainer);
-divUlContainer.setAttribute("id", "div-ul-container-el");
-const uLEl = document.createElement("ul");
-uLEl.setAttribute("id", "ul-el");
-document.querySelector("#div-ul-container-el").append(uLEl);
+// Wait for the DOM to load completely before running the code
+document.addEventListener("DOMContentLoaded", function () {
+  const inputEl = document.querySelector("#input-el");
+  const inputNameEl = document.querySelector("#input-name-el");
+  const inputBtn = document.querySelector("#input-btn");
+  const divUlContainer = document.createElement("div");
+  document.querySelector("body").append(divUlContainer);
+  divUlContainer.setAttribute("id", "div-ul-container-el");
 
-let myLeads = [];
+  const uLEl = document.createElement("ul");
+  uLEl.setAttribute("id", "ul-el");
+  document.querySelector("#div-ul-container-el").append(uLEl);
 
-// myLeads = JSON.parse(myLeads);
+  // Initialize the leads array (If leads existin localStorage, use them)
+  let myLeads = (leadsFromLocalStorage =
+    JSON.parse(localStorage.getItem("myLeads")) || []);
 
-// myLeads.push("www.rock.com")
+  if (leadsFromLocalStorage) {
+    myLeads = leadsFromLocalStorage;
+    renderLeads();
+  }
 
-// myLeads = JSON.stringify(myLeads);
+  console.log(leadsFromLocalStorage);
 
-// console.log(typeof myLeads)
+  function renderLeads() {
+    uLEl.innerHTML = "";
 
-let leadsFromLocalStorage = JSON.parse( localStorage.getItem("myLeads") )
+    myLeads.forEach((lead) => {
+      const liEl = document.createElement("li");
 
-if (leadsFromLocalStorage) {
-  myLeads = leadsFromLocalStorage
+      const aEl = document.createElement("a");
+      aEl.href = lead;
+      aEl.textContent = lead;
+      aEl.target = "_blank";
+
+      liEl.appendChild(aEl);
+      uLEl.appendChild(liEl);
+
+      // liEl.textContent = lead;
+      // uLEl.appendChild(liEl);
+    });
+
+    // console.log(myLeads);
+    // console.log(aEl.href);
+    // console.log(uLEl);
+  }
+
   renderLeads();
-}
 
-console.log(leadsFromLocalStorage)
+  // Add an event listener for the button click
+  inputBtn.addEventListener("click", () => {
+    let inputValue = inputEl.value;
+    let inputNameValue = inputNameEl.value;
 
-inputBtn.addEventListener("click", () => {
-  let inputValue = inputEl.value;
-  myLeads.push(inputValue);
-  clearField();
-  localStorage.setItem("myLeads", JSON.stringify(myLeads));
-  
-  console.log( localStorage.getItem("myLeads") )
+    if (inputValue && inputNameValue) {
+      myLeads.unshift({name:inputNameValue, url:inputValue});
+
+      localStorage.setItem("myLeads", JSON.stringify(myLeads));
+      renderLeads();
+      clearField();
+    }
+  });
+
+  function clearField() {
+    inputEl.value = "";
+    inputNameEl.value = "";
+  }
 });
-
-const renderLeads = () =>{
-const liEl = document.createElement("li");
-  //   liEl.textContent = inputValue;
-  liEl.setAttribute("class", "li-el");
-
-  const aEl = document.createElement("a");
-  aEl.href = inputValue;
-  aEl.textContent = inputValue;
-  aEl.target = "_blank";
-
-  liEl.appendChild(aEl);
-  uLEl.appendChild(liEl);
-
-  console.log(myLeads);
-  console.log(aEl.href);
-  console.log(uLEl);
-}
-
-let clearField = () => {
-  inputEl.value = "";
-};
