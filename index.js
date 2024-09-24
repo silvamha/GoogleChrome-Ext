@@ -2,6 +2,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const inputEl = document.querySelector("#input-el");
   const inputBtn = document.querySelector("#input-btn");
+  const tabBtn = document.querySelector("#tab-btn");
   const deleteBtn = document.querySelector("#delete-btn");
   const divUlContainer = document.createElement("div");
   document.querySelector("body").append(divUlContainer);
@@ -13,6 +14,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize the leads array (if leads exist in localStorage, use them)
   let myLeads = JSON.parse(localStorage.getItem("myLeads")) || [];
+
+  // const tabs = [{ url: "https://www.linkedin.com/in/per-harald-borgen/" }];
+
+  // Listen for clicks on tab button
+  tabBtn.addEventListener("click", () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      myLeads.unshift(tabs[0].url);
+      localStorage.setItem("myLeads", JSON.stringify(myLeads));
+      renderLeads(myLeads);
+    });
+    console.log("tab saved");
+    console.log(tabs[0].url);
+  });
 
   // Function to render all leads
   function renderLeads() {
@@ -63,10 +77,3 @@ document.addEventListener("DOMContentLoaded", function () {
     renderLeads(myLeads);
   }
 });
-
-const addFunction = (x, y) {
-  return x + y
-}
-
-console.log( add(3, 4)   ) // should log 7
-console.log( add(9, 102) ) // should log 111
